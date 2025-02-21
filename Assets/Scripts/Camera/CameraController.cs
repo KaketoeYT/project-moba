@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private GameObject TargetFree;
     private bool CameraState;
 
-    void setParent(GameObject newParent)
+    public void setParent(GameObject newParent)
     {
         transform.parent = newParent.transform;
         transform.rotation = newParent.transform.rotation;
