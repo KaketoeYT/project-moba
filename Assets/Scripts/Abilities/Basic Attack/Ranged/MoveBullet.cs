@@ -5,19 +5,20 @@ using UnityEngine.Serialization;
 
 public class MoveBullet : MonoBehaviour
 {
-    public Vector3 targetLocation;
-    private Vector3 _targetDirection;
-    [SerializeField] private float bulletSpeed;
+    [SerializeField] private BulletVar bulletVar;
     
     // Start is called before the first frame update
     void Start()
     {
-        _targetDirection = (new Vector3(targetLocation.x,transform.position.y,targetLocation.z) - transform.position).normalized;
+        //kill bullet after 2 seconds
+        Destroy(gameObject, bulletVar.bulletDeathTime);
+        
+        bulletVar.bulletDirection = (new Vector3(bulletVar.bulletDirection.x,transform.position.y,bulletVar.bulletDirection.z) - transform.position).normalized;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += _targetDirection * bulletSpeed * Time.deltaTime;
+        transform.position += bulletVar.bulletDirection * bulletVar.bulletSpeed * Time.deltaTime;
     }
 }

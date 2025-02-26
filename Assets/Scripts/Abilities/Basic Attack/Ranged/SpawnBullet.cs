@@ -12,7 +12,8 @@ public class SpawnBullet : MonoBehaviour
     public void RangedAttack()
     {
         _currentBullet = Instantiate(Bullet, transform.position, Quaternion.identity);
-        _currentBullet.GetComponent<MoveBullet>().targetLocation = _camera.GetComponent<WorldMousePos>().Hit;
+        _currentBullet.GetComponent<BulletVar>().bulletOwner = gameObject;
+        _currentBullet.GetComponent<BulletVar>().bulletDirection = _camera.GetComponent<WorldMousePos>().Hit;
     }
 
     private void Awake()
