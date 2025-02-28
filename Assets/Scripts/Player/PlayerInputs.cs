@@ -5,6 +5,10 @@ using UnityEngine.Events;
 
 public class PlayerInputs : MonoBehaviour
 {
+    [SerializeField] private PlayerStats playerStats;
+
+    private float _basicNextFireTime = 0;
+        
     public UnityEvent basicAttack = new UnityEvent();
     
     // Start is called before the first frame update
@@ -16,10 +20,14 @@ public class PlayerInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Time.time > _basicNextFireTime)
         {
-            basicAttack.Invoke();
-            Debug.Log("attack");
+            if (Input.GetButtonDown("Fire1"))
+            {
+                basicAttack.Invoke();
+                Debug.Log("attack");
+                _basicNextFireTime = Time.time + playerStats.playerAttackSpeed;
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class MoveBullet : MonoBehaviour
+public class BulletMove : MonoBehaviour
 {
     [SerializeField] private BulletVar bulletVar;
     
@@ -19,6 +19,6 @@ public class MoveBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += bulletVar.bulletDirection * bulletVar.bulletSpeed * Time.deltaTime;
+        transform.position += bulletVar.bulletDirection * (bulletVar.bulletSpeed * Time.deltaTime);
     }
 }

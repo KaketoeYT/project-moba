@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private PlayerStats playerStats;
+
     public CharacterController CharacterController;
     private float _moveX, _moveZ;
-    public float MoveSpeed;
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,6 @@ public class PlayerMovement : MonoBehaviour
         _moveX = Input.GetAxis("Horizontal");
         _moveZ = Input.GetAxis("Vertical");
 
-        CharacterController.Move(new Vector3(_moveX,0,_moveZ)*Time.deltaTime*MoveSpeed);
+        CharacterController.Move(new Vector3(_moveX,0,_moveZ)*playerStats.playerMoveSpeed*Time.deltaTime);
     }
 }
