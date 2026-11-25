@@ -7,19 +7,14 @@ public class PlayerStats : MonoBehaviour
     [FormerlySerializedAs("playerMoveSpeed")]
     [SerializeField, Min(0f)] private float moveSpeed = 5f;
 
-    [Tooltip("Seconds between basic attacks (higher = slower)")]
-    [FormerlySerializedAs("playerAttackSpeed")]
-    [SerializeField, Min(0f)] private float attackCooldown = 1f;
-
     [FormerlySerializedAs("playerMaxHealth")]
     [SerializeField, Min(1f)] private float maxHealth = 100f;
 
     [FormerlySerializedAs("playerHealth")]
     [SerializeField] private float health;
 
-    // Read-only access for other scripts (movement, input, UI health bars...)
+    // Read-only access for other scripts (movement, UI health bars...)
     public float MoveSpeed => moveSpeed;
-    public float AttackCooldown => attackCooldown;
     public float Health => health;
     public float MaxHealth => maxHealth;
     public bool IsDead => health <= 0f;
@@ -36,6 +31,14 @@ public class PlayerStats : MonoBehaviour
             maxHealth = 1f;
         }
 
+        health = maxHealth;
+    }
+
+    // Used by CharacterLoadout to turn this object into a given character. Resets to full health.
+    public void SetBaseStats(float newMoveSpeed, float newMaxHealth)
+    {
+        moveSpeed = Mathf.Max(0f, newMoveSpeed);
+        maxHealth = Mathf.Max(1f, newMaxHealth);
         health = maxHealth;
     }
 

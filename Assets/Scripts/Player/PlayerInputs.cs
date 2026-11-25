@@ -1,23 +1,62 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PlayerInputs : MonoBehaviour
 {
-    [SerializeField] private PlayerStats playerStats;
+    [Serializable]
+    private struct SlotBinding
+    {
+        public AbilitySlot slot;
+        public KeyCode key;
+    }
 
-    // Wired up in the Inspector (currently BulletSpawn.RangedAttack)
-    [SerializeField] private UnityEvent basicAttack;
+    [SerializeField] private AbilityCaster caster;
 
-    private float _nextBasicAttackTime;
+    // Falls back to the one on the main camera if left empty
+    [SerializeField] private WorldMousePos mousePos;
+
+    [Tooltip("Button name from Edit > Project Settings > Input Manager")]
+    [SerializeField] private string basicAttackButton = "Fire1";
+
+    // Rebindable in the Inspector. The Passive slot has no key, it just works.
+    [SerializeField] private SlotBinding[] abilityBindings =
+    {
+        new SlotBinding { slot = AbilitySlot.Ability1, key = KeyCode.Q },
+        new SlotBinding { slot = AbilitySlot.Ability2, key = KeyCode.E },
+        new SlotBinding { slot = AbilitySlot.Ability3, key = KeyCode.LeftShift },
+        new SlotBinding { slot = AbilitySlot.Ultimate, key = KeyCode.R },
+    };
+
+    // Called by Unity when you add the component in the editor: auto-fills the reference
+    private void Reset()
+    {
+        caster = GetComponent<AbilityCaster>();
+    }
+
+    private void Awake()
+    {
+        if (mousePos == null && !Camera.main.TryGetComponent(out mousePos))
+        {
+            Debug.LogError($"{nameof(PlayerInputs)} on {name}: no WorldMousePos found on the main camera.", this);
+            enabled = false;
+        }
+    }
 
     private void Update()
     {
-        if (Time.time < _nextBasicAttackTime || !Input.GetButtonDown("Fire1"))
+        Vector3 aimPoint = mousePos.Hit;
+
+        if (Input.GetButtonDown(basicAttackButton))
         {
-            return;
+            caster.TryCast(AbilitySlot.BasicAttack, aimPoint);
         }
 
-        basicAttack.Invoke();
-        _nextBasicAttackTime = Time.time + playerStats.AttackCooldown;
+        foreach (SlotBinding binding in abilityBindings)
+        {
+            if (Input.GetKeyDown(binding.key))
+            {
+                caster.TryCast(binding.slot, aimPoint);
+            }
+        }
     }
 }
