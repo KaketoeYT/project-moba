@@ -9,12 +9,12 @@ public class TowerBulletMove : MonoBehaviour
     void Start()
     {
         //kill bullet after 2 seconds
-        Destroy(gameObject, bulletVar.bulletDeathTime);
+        //Destroy(gameObject, bulletVar.bulletDeathTime);
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += GetComponent<TowerShoot>().towerBulletDirection * (bulletVar.bulletSpeed * Time.deltaTime);
+        //transform.position += GetComponent<TowerShoot>().towerTarget.transform.position - transform.position * (bulletVar.bulletSpeed * Time.deltaTime);
     }
 }

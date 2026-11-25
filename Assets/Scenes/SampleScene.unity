@@ -925,7 +925,7 @@ GameObject:
   - component: {fileID: 1580619870}
   - component: {fileID: 1580619877}
   - component: {fileID: 1580619878}
-  - component: {fileID: 1580619875}
+  - component: {fileID: 1580619879}
   m_Layer: 0
   m_Name: Tower-Hitbox
   m_TagString: Untagged
@@ -998,20 +998,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580619868}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1580619875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1580619868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 754569a07d1f75a4b9b2b3876cbd2068, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletVar: {fileID: 1580619878}
-  Bullet: {fileID: 1174285658812484589, guid: 396937f76cde272438219cb6923b0650, type: 3}
 --- !u!64 &1580619877
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1051,6 +1037,21 @@ MonoBehaviour:
   bulletDeathTime: 5
   bulletSpeed: 5
   bulletDamage: 1
+--- !u!114 &1580619879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580619868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754569a07d1f75a4b9b2b3876cbd2068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bullet: {fileID: 1174285658812484589, guid: e1ef825d07c27204f8943cc89c5e78f9, type: 3}
+  bulletVar: {fileID: 1580619878}
+  towerBulletDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &1629373115
 GameObject:
   m_ObjectHideFlags: 0

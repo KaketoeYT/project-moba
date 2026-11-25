@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TowerShoot : MonoBehaviour
 {
     [SerializeField] private GameObject Bullet;
     [SerializeField] private BulletVar bulletVar;
-    public Vector3 towerBulletDirection;
     private GameObject _towerTarget;
     private GameObject _currentBullet;
 
@@ -30,7 +30,8 @@ public class TowerShoot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //kill bullet after 2 seconds
+        Destroy(_currentBullet.gameObject, bulletVar.bulletDeathTime);
     }
 
     // Update is called once per frame
@@ -40,8 +41,9 @@ public class TowerShoot : MonoBehaviour
         {
             return;
         }
-
-        towerBulletDirection = _towerTarget.transform.position - transform.position;
-        Debug.Log(towerBulletDirection);
+        
+        _currentBullet.transform.position += _towerTarget.transform.position * (bulletVar.bulletSpeed * Time.deltaTime);
+        
+        //debug.Log(_towerTarget.transform.position);
     }
 }

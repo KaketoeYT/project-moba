@@ -123,7 +123,7 @@ MonoBehaviour:
   bulletOwner: {fileID: 0}
   bulletDirection: {x: 0, y: 0, z: 0}
   bulletDeathTime: 3
-  bulletSpeed: 5
+  bulletSpeed: 1
   bulletDamage: 1
 --- !u!114 &791895568409650066
 MonoBehaviour:

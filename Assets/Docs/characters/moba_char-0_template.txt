@@ -21,40 +21,76 @@ DESIGN:
                                 
 ---------------------------------
 
-Ability 0 - Passive
-
-Description
-
----------------------------------
-
 Basic attack
 
-Slow rate - Long Ranged
-description where do they come from?.
+	Rate - [Slow/Medium/Fast] | Range - [Short/Medium/Long]
+	description, where do the shots come from?
+
+	NUMBERS: (optional)
+		Damage:
 
 ---------------------------------
 
-Ability 1 :
-	ON FIRST CAST: 
+Ability 0 - Passive
+	Name:
+
+	description
+
+	NUMBERS: (optional)
+
+---------------------------------
+
+Ability 1
+	Name:
+
+	ON FIRST CAST:
 		description
 
-	ON SECOND CAST: 
+	ON SECOND CAST:
 		description
 
+	NUMBERS: (optional)
+		Cooldown:
+		Duration:
+		Damage:
 
-Ability 2:
+Ability 2
+	Name:
+
 	ON CAST:
 		description
 
-	Passive:
+	NUMBERS: (optional)
+		Cooldown:
+		Duration:
+		Damage:
+
+Ability 3
+	Name:
+
+	ON CAST:
 		description
 
-Ability 3:
-	ON CAST:
-	
+	NUMBERS: (optional)
+		Cooldown:
+		Duration:
+		Damage:
 
+Ability 4 (ULT)
+	Name:
 
-Ability 4 (ULT):
 	ON CAST:
+		description
+
+	NUMBERS: (optional)
+		Cooldown:
+		Duration:
+		Damage:
+
+---------------------------------
+
+SYNERGIES: (optional)
+	Works well with:
+	Struggles against:
 
 ---------------------------------

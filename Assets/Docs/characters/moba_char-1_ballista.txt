@@ -5,92 +5,15 @@
  | |_) || (_| || || || |\__ \| |_| (_| |
  |____/  \__,_||_||_||_||___/ \__|\__,_|
 
------------------------
-IDEA:
-  Ballista is a living weapon where their main playstyle is creating a safe space for their teammates.
-  They do so by carving paths through terrain or acting as a shield while the teammate on their back
-  can do the shooting.
-
-DESIGN:
-	part of The living weapons
-
------------------------
-        _     _  _  _  _    _          
-  __ _ | |__ (_)| |(_)| |_ (_) ___  ___
- / _` || '_ \| || || ||  _|| |/ -_)(_-<
- \__,_||_.__/|_||_||_| \__||_|\___|/__/
-                                       
------------------------
-
-Basic attack - (Left Mouse)
-
-Slow rate - Medium Ranged
-shots come from the big ballista on their back.
-
------------------------
-
-Ability 0 - Passive
-Name
-
-Become mountable - Toggle (R)
-When an ally is on the back of you you are unable to cast Basic attack,
-your teammate becomes untargetable and has less acurracy.
-
------------------------
-
-Ability 1 :
-  ON CAST:
-    You dash through terrain leaving it destroyed for a moment.
-    Teammates can walk through the terrain during the duration.
-
-
-
-Ability 2 - Active (E)
-Name
-
-You can shoot the teammate on your back.
-The longer you charge the further they will go.
-
-
-
-Ability 3 - Active (L Shift)
-Name
-
-Anchor yourself into the ground becoming CC immune and giving the teammate on your back
-more accuracy for a short duration
-
-
------------------------
-Ability 4 - Active (Q) (ULT)
-Name
-
-Shoot a more powerful fast moving projectile in a straight line.
-The projectile bounces off of walls. Projectile applies slow on hit.
-
-
-
-
-
-
-
-
-
-
-  ____          _  _  _       _         
- |  _ \        | || |(_)     | |        
- | |_) |  __ _ | || | _  ___ | |_  __ _ 
- |  _ <  / _` || || || |/ __|| __|/ _` |
- | |_) || (_| || || || |\__ \| |_| (_| |
- |____/  \__,_||_||_||_||___/ \__|\__,_|
-
 ------------------------------------------------
 
 IDEA:
 	Ballista is a living weapon where their main playstyle is creating a safe space for their teammates.
-  They do so by carving paths through terrain or acting as a shield while the teammate on their back
-  can do the shooting.
+	They do so by carving paths through terrain or acting as a shield while the teammate on their back
+	can do the shooting.
 
-
+DESIGN:
+	Part of The living weapons
 
 ---------------------------------
     _   _    _ _ _ _   _        
@@ -102,39 +25,73 @@ IDEA:
 
 Basic attack
 
-Slow rate - Medium Ranged
-shots come from the big ballista on their back.
+	Rate - Slow | Range - Medium
+	Shots come from the big ballista on their back.
+
+	NUMBERS: (optional)
+		Damage:
 
 ---------------------------------
 
-Ability 0:
-  PASSIVE:
-    When an ally is on the back of you you are unable to cast Basic attack,
-    your teammate becomes untargetable and has less acurracy.
+Ability 0 - Passive
+	Name: Become mountable (Toggle)
+
+	When an ally is on the back of you you are unable to cast Basic attack,
+	your teammate becomes untargetable and has less accuracy.
 
 ---------------------------------
 
+Ability 1
+	Name:
 
-Ability 1:
-	ON CAST: 
+	ON CAST:
 		You dash through terrain leaving it destroyed for a moment.
-    Teammates can walk through the terrain during the duration.
+		Teammates can walk through the terrain during the duration.
 
-Ability 2:
+	NUMBERS: (optional)
+		Cooldown:
+		Duration:
+
+Ability 2
+	Name:
+
 	ON CAST:
 		You can shoot the teammate on your back.
-    The longer you charge the further they will go.
+		The longer you charge the further they will go.
 
-Ability 3:
+	NUMBERS: (optional)
+		Cooldown:
+		Max charge time:
+		Max distance:
+
+Ability 3
+	Name:
+
 	ON CAST:
-    Anchor yourself into the ground becoming CC immune and giving the teammate on your back
-    more accuracy for a short duration
-	
+		Anchor yourself into the ground becoming CC immune and giving the teammate on your back
+		more accuracy for a short duration.
 
+	NUMBERS: (optional)
+		Cooldown:
+		Duration:
 
-Ability 4 (ULT):
+Ability 4 (ULT)
+	Name:
+
 	ON CAST:
-    Shoot a more powerful fast moving projectile in a straight line.
-    The projectile bounces off of walls. Projectile applies slow on hit.
+		Shoot a more powerful fast moving projectile in a straight line.
+		The projectile bounces off of walls. Projectile applies slow on hit.
+
+	NUMBERS: (optional)
+		Cooldown:
+		Damage:
+		Slow amount / duration:
+		Max bounces:
+
+---------------------------------
+
+SYNERGIES: (optional)
+	Works well with:
+	Struggles against:
 
 ---------------------------------
