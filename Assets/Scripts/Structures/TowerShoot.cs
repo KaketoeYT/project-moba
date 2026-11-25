@@ -106,7 +106,7 @@ public class TowerShoot : MonoBehaviour
 
     private bool TryFireAt(Transform target)
     {
-        // Flat (XZ) direction, same convention as every other bullet
+        // Flat (XZ) direction for the first moment of flight, same convention as every other bullet
         Vector3 direction = target.position - firePoint.position;
         direction.y = 0f;
 
@@ -120,6 +120,13 @@ public class TowerShoot : MonoBehaviour
         BulletVar bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(direction));
         bullet.bulletOwner = owner;
         bullet.bulletDirection = direction;
+
+        // If the bullet can home, lock it onto its target so it follows from any distance
+        if (bullet.TryGetComponent(out BulletHoming homing))
+        {
+            homing.SetTarget(target);
+        }
+
         return true;
     }
 }

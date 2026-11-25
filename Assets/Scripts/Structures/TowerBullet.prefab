@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 497306275544853204}
   - component: {fileID: 791895568409650066}
   - component: {fileID: 1895018455047633727}
+  - component: {fileID: 73647008331415674}
   m_Layer: 2
   m_Name: TowerBullet
   m_TagString: Untagged
@@ -158,3 +159,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletMove
   bulletVar: {fileID: 497306275544853204}
+--- !u!114 &73647008331415674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174285658812484589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6128094430349354dae30fdd2a8e88f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BulletHoming
+  bulletVar: {fileID: 497306275544853204}
+  turnSpeed: 360
+  steerOnFlatPlane: 1

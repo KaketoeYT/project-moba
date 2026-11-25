@@ -7,9 +7,26 @@ public class BulletHoming : MonoBehaviour
     [Tooltip("How fast the bullet can turn towards its target, in degrees per second")]
     [SerializeField, Min(0f)] private float turnSpeed = 360f;
 
+    [Tooltip("On: only steer sideways (bullet keeps its spawn height). Off: also steer up and down.")]
+    [SerializeField] private bool steerOnFlatPlane = true;
+
     private Transform _target;
 
-    // This script lives on a trigger collider that acts as the bullet's "detection radius"
+    // Called by spawners that already know their target (e.g. towers).
+    // The bullet then homes in from any distance, no detection zone needed.
+    public void SetTarget(Transform target)
+    {
+        _target = target;
+    }
+
+    // Called by Unity when you add the component in the editor.
+    // GetComponentInParent works whether this sits on the bullet root or on a child collider.
+    private void Reset()
+    {
+        bulletVar = GetComponentInParent<BulletVar>();
+    }
+
+    // Detection-zone mode: when this sits on a trigger collider, lock onto the first valid thing that enters
     private void OnTriggerEnter(Collider other)
     {
         // Already locked on to something
@@ -47,9 +64,12 @@ public class BulletHoming : MonoBehaviour
             return;
         }
 
-        // Steer on the flat XZ plane only, same as the rest of the bullet logic
         Vector3 toTarget = _target.position - transform.position;
-        toTarget.y = 0f;
+
+        if (steerOnFlatPlane)
+        {
+            toTarget.y = 0f;
+        }
 
         if (toTarget.sqrMagnitude < 0.0001f)
         {
