@@ -1,0 +1,71 @@
+  ______                  _ 
+ |  ____|                | |
+ | |__ _   _ ___  ___  __| |
+ |  __| | | / __|/ _ \/ _` |
+ | |  | |_| \__ \  __/ (_| |
+ |_|   \__,_|___/\___|\__,_|
+                            
+------------------------------------------------
+
+IDEA:
+	description
+
+
+DESIGN:
+	part of The living weapons
+	multiple knights fused together after being hit by boiling hot oil during a siege.
+
+	all 3 abilities resemble a person that melted into "Fused" 
+		1. Spear knight
+		2. Shield knight
+		3. Ladder pal
+
+---------------------------------
+    _   _    _ _ _ _   _        
+   /_\ | |__(_) (_) |_(_)___ ___
+  / _ \| '_ \ | | |  _| / -_|_-<
+ /_/ \_\_.__/_|_|_|\__|_\___/__/
+                                
+---------------------------------
+
+Ability 0 - Passive
+
+Description
+
+---------------------------------
+
+Basic attack
+
+Slow rate - (Medium - Short)Melee Ranged
+Attacks with the current weapon form (last used ability, Spear/Shield)
+
+---------------------------------
+
+Ability 1 :
+	ON CAST:
+		description
+
+
+Ability 2:
+	ON CAST:
+		You raise your shield.
+		when this ability is active you take less damage from the direction your shield is pointing.
+		Mana drains while shield is risen, and for each hit tanked with your shield.
+	
+	ON RECAST:
+		Lower shield
+
+	PASSIVE:
+		when raising your shield, you gain half a second of invulnerability from the direction your shield is pointing.
+
+
+Ability 3:
+	ON CAST:
+		description
+
+
+Ability 4 (ULT):
+	ON CAST:
+		description
+
+---------------------------------
