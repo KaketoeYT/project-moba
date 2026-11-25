@@ -1,45 +1,71 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private GameObject TargetPlayer;
-    [SerializeField] private GameObject TargetFree;
-    private bool CameraState;
+    [FormerlySerializedAs("TargetPlayer")]
+    [SerializeField] private Transform targetPlayer;
 
-    public void setParent(GameObject newParent)
+    [FormerlySerializedAs("TargetFree")]
+    [SerializeField] private Transform targetFree;
+
+    [SerializeField] private KeyCode toggleKey = KeyCode.Space;
+
+    private FreeCameraMovement _freeCameraMovement;
+    private bool _isFreeCamera;
+
+    private void Awake()
     {
-        transform.parent = newParent.transform;
-        transform.rotation = newParent.transform.rotation;
-        transform.position = newParent.transform.position;
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!Input.GetKeyDown(KeyCode.Space))
+        if (targetPlayer == null || targetFree == null)
         {
+            Debug.LogError($"{nameof(CameraController)} on {name}: assign both camera targets.", this);
+            enabled = false;
             return;
         }
 
-        CameraState = !CameraState;
+        // Cached once; may stay null if the free target has no movement script
+        targetFree.TryGetComponent(out _freeCameraMovement);
+    }
 
-        if (CameraState == true)
+    private void Start()
+    {
+        // Follow the player from the very beginning
+        SetFreeCamera(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(toggleKey))
         {
-            setParent(TargetFree);
-            TargetFree.transform.position = TargetPlayer.transform.position;
+            SetFreeCamera(!_isFreeCamera);
         }
-        else
+    }
+
+    private void SetFreeCamera(bool free)
+    {
+        _isFreeCamera = free;
+
+        if (free)
         {
-            setParent(TargetPlayer);
+            // Start free-roaming from wherever the player camera currently is
+            targetFree.position = targetPlayer.position;
         }
+
+        AttachTo(free ? targetFree : targetPlayer);
+
+        // Edge scrolling only makes sense while the free camera is active
+        if (_freeCameraMovement != null)
+        {
+            _freeCameraMovement.enabled = free;
+        }
+    }
+
+    private void AttachTo(Transform target)
+    {
+        // worldPositionStays = false, then zero the local pose so the camera sits exactly on the target.
+        // Parenting means no per-frame follow code is needed at all.
+        transform.SetParent(target, false);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 }

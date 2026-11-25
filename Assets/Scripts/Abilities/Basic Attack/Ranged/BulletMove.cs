@@ -1,24 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
+[RequireComponent(typeof(BulletVar))]
 public class BulletMove : MonoBehaviour
 {
+    private void Reset()
+    {
+        bulletVar = GetComponent<BulletVar>();
+    }
+    
     [SerializeField] private BulletVar bulletVar;
     
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        //kill bullet after 2 seconds
+        // Safety net: despawn after the configured lifetime
         Destroy(gameObject, bulletVar.bulletDeathTime);
-        
-        bulletVar.bulletDirection = (new Vector3(bulletVar.bulletDirection.x,transform.position.y,bulletVar.bulletDirection.z) - transform.position).normalized;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        // bulletDirection is already a normalized direction (set by whoever spawned the bullet)
         transform.position += bulletVar.bulletDirection * (bulletVar.bulletSpeed * Time.deltaTime);
     }
 }

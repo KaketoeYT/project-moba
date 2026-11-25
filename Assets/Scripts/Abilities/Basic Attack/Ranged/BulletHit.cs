@@ -1,29 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletHit : MonoBehaviour
 {
     [SerializeField] private BulletVar bulletVar;
-    void OnTriggerEnter(Collider other)
+
+    // Prevents hitting two colliders in the same frame and dealing damage twice
+    private bool _hasHit;
+
+    private void OnTriggerEnter(Collider other)
     {
-        //check if target hit isn't a player, if so stop function
-        if (other.transform == bulletVar.bulletOwner.transform)
+        if (_hasHit)
         {
             return;
         }
-        
-        //destroy bullet
-        Destroy(gameObject);
-        
-        //deal damage to target
-        other.GetComponent<PlayerStats>().playerHealth -= bulletVar.bulletDamage;
-        Debug.Log(other.GetComponent<PlayerStats>().playerHealth);
 
-        //check if health is 0 or smaller, if so destroy target
-        if (other.GetComponent<PlayerStats>().playerHealth <= 0)
+        // Ignore trigger zones (tower ranges, homing zones, other bullets)
+        if (other.isTrigger)
         {
-            Destroy(other.gameObject);
+            return;
         }
+
+        // Ignore whoever fired this bullet, including their child colliders
+        if (bulletVar.bulletOwner != null && other.transform.IsChildOf(bulletVar.bulletOwner.transform))
+        {
+            return;
+        }
+
+        _hasHit = true;
+
+        // Only things with PlayerStats take damage; anything else solid (walls, terrain) just stops the bullet
+        if (other.TryGetComponent(out PlayerStats stats))
+        {
+            stats.TakeDamage(bulletVar.bulletDamage);
+        }
+
+        Destroy(gameObject);
     }
 }

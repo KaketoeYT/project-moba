@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,27 +5,19 @@ public class PlayerInputs : MonoBehaviour
 {
     [SerializeField] private PlayerStats playerStats;
 
-    private float _basicNextFireTime = 0;
-        
-    public UnityEvent basicAttack = new UnityEvent();
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // Wired up in the Inspector (currently BulletSpawn.RangedAttack)
+    [SerializeField] private UnityEvent basicAttack;
 
-    // Update is called once per frame
-    void Update()
+    private float _nextBasicAttackTime;
+
+    private void Update()
     {
-        if (Time.time > _basicNextFireTime)
+        if (Time.time < _nextBasicAttackTime || !Input.GetButtonDown("Fire1"))
         {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                basicAttack.Invoke();
-                Debug.Log("attack");
-                _basicNextFireTime = Time.time + playerStats.playerAttackSpeed;
-            }
+            return;
         }
+
+        basicAttack.Invoke();
+        _nextBasicAttackTime = Time.time + playerStats.AttackCooldown;
     }
 }

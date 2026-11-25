@@ -1,37 +1,39 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletSpawn : MonoBehaviour
 {
-    [SerializeField] private GameObject Bullet;
-    private GameObject _currentBullet;
-    private Camera _camera;
-    
-    public void RangedAttack()
-    {
-        //spawn bullet and give it the owner and direction
-        _currentBullet = Instantiate(Bullet, transform.position, Quaternion.identity);
-        _currentBullet.GetComponent<BulletVar>().bulletOwner = gameObject;
-        _currentBullet.GetComponent<BulletVar>().bulletDirection = _camera.GetComponent<WorldMousePos>().Hit;
-    }
+    // Typed as BulletVar so Instantiate returns it directly (no GetComponent needed)
+    [SerializeField] private BulletVar bulletPrefab;
 
-    //assign the main camera to _camera var
+    // Drag the camera's WorldMousePos here. Falls back to the main camera if left empty.
+    [SerializeField] private WorldMousePos mousePos;
+
     private void Awake()
     {
-        _camera = Camera.main;
+        if (mousePos == null && !Camera.main.TryGetComponent(out mousePos))
+        {
+            Debug.LogError($"{nameof(BulletSpawn)} on {name}: no WorldMousePos found on the main camera.", this);
+            enabled = false;
+        }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    // Hooked up to PlayerInputs.basicAttack in the Inspector
+    public void RangedAttack()
     {
-        
-    }
+        // Flat (XZ) direction from this object towards the mouse hit point
+        Vector3 direction = mousePos.Hit - transform.position;
+        direction.y = 0f;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Mouse is (almost) exactly on top of the player, no meaningful direction
+        if (direction.sqrMagnitude < 0.0001f)
+        {
+            return;
+        }
+
+        direction.Normalize();
+
+        BulletVar bullet = Instantiate(bulletPrefab, transform.position, Quaternion.LookRotation(direction));
+        bullet.bulletOwner = gameObject;
+        bullet.bulletDirection = direction;
     }
 }
