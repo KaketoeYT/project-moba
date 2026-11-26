@@ -19,6 +19,6 @@ MonoBehaviour:
   basicAttack: {fileID: 11400000, guid: 71d7a4223afc9654cbc7030b4779abfc, type: 2}
   passive: {fileID: 0}
   ability1: {fileID: 11400000, guid: c407f5b7e9a5f1c4c8dc750e13bc45d3, type: 2}
-  ability2: {fileID: 0}
+  ability2: {fileID: 11400000, guid: fad94d1694fc67b488fd2dfdad926bb6, type: 2}
   ability3: {fileID: 0}
   ultimate: {fileID: 0}

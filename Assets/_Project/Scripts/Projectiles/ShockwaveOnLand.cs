@@ -1,3 +1,4 @@
+using _Project.Scripts.Combat;
 using _Project.Scripts.Player;
 using UnityEngine;
 
@@ -56,12 +57,20 @@ namespace _Project.Scripts.Projectiles
                     continue;
                 }
 
-                if (hit.TryGetComponent(out PlayerStats stats))
+                if (hit.TryGetComponent(out IDamageable damageable))
                 {
-                    stats.TakeDamage(damage);
+                    damageable.TakeDamage(damage);
                 }
 
-                if (hit.TryGetComponent(out ForceReceiver receiver))
+                if (hit.TryGetComponent(out IShockwaveReceiver reactive))
+                {
+                    // Measured to the nearest surface, not the centre, so big things like walls react fairly.
+                    // (ClosestPoint needs a box, sphere, capsule or convex mesh collider.)
+                    float surfaceDistance = Vector3.Distance(hit.ClosestPoint(point), point);
+                    reactive.OnShockwave(point, 1f - Mathf.Clamp01(surfaceDistance / radius));
+                }
+
+                if (hit.TryGetComponent(out ForceReceiver pushReceiver))
                 {
                     Vector3 away = hit.transform.position - point;
                     away.y = 0f;
@@ -71,7 +80,7 @@ namespace _Project.Scripts.Projectiles
                     Vector3 direction = distance > 0.001f ? away / distance : Vector3.forward;
                     float strength = 1f - Mathf.Clamp01(distance / radius);
 
-                    receiver.AddImpulse(direction * (pushSpeed * strength));
+                    pushReceiver.AddImpulse(direction * (pushSpeed * strength));
                 }
             }
         }

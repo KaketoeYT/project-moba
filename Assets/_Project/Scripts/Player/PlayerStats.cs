@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using _Project.Scripts.Combat;
 
 namespace _Project.Scripts.Player
 {
-    public class PlayerStats : MonoBehaviour
+        public class PlayerStats : MonoBehaviour, IDamageable
     {
         [FormerlySerializedAs("playerMoveSpeed")]
         [SerializeField, Min(0f)] private float moveSpeed = 5f;

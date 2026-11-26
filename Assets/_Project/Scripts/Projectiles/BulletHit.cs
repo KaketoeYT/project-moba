@@ -1,4 +1,4 @@
-using _Project.Scripts.Player;
+using _Project.Scripts.Combat;
 using UnityEngine;
 
 namespace _Project.Scripts.Projectiles
@@ -31,10 +31,10 @@ namespace _Project.Scripts.Projectiles
 
             _hasHit = true;
 
-            // Only things with PlayerStats take damage; anything else solid (walls, terrain) just stops the bullet
-            if (other.TryGetComponent(out PlayerStats stats))
+            // Anything damageable (players, walls...) takes the hit; anything else solid (terrain) just stops the bullet
+            if (other.TryGetComponent(out IDamageable damageable))
             {
-                stats.TakeDamage(bulletVar.bulletDamage);
+                damageable.TakeDamage(bulletVar.bulletDamage);
             }
 
             Destroy(gameObject);
