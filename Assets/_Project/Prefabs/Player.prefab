@@ -17,6 +17,9 @@ GameObject:
   - component: {fileID: 244778883644326821}
   - component: {fileID: 9161356740056135211}
   - component: {fileID: 4478160537470552337}
+  - component: {fileID: 9109037191474279142}
+  - component: {fileID: 4346199933454535092}
+  - component: {fileID: 5875475125516698319}
   m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
@@ -189,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82cbd50757b2ccb4298ff3378978af4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  caster: {fileID: 0}
+  caster: {fileID: 9109037191474279142}
   mousePos: {fileID: 0}
   basicAttackButton: Fire1
   abilityBindings:
@@ -216,6 +219,47 @@ MonoBehaviour:
   moveSpeed: 5
   maxHealth: 100
   health: 2
+--- !u!114 &9109037191474279142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2395502189899357894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd395166872486b922669cd3165edc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Abilities.AbilityCaster
+  castOrigin: {fileID: 0}
+--- !u!114 &4346199933454535092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2395502189899357894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc414ec43844d2d81a537e72bab12ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterLoadout
+  character: {fileID: 11400000, guid: a4a03c2c2db080f4685ccd34c9dfce2e, type: 2}
+  caster: {fileID: 9109037191474279142}
+  playerStats: {fileID: 4478160537470552337}
+--- !u!114 &5875475125516698319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2395502189899357894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3342b414f6f14161a889545be52e6cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Player.ForceReceiver
+  drag: 5
 --- !u!1 &3544463636414202502
 GameObject:
   m_ObjectHideFlags: 0

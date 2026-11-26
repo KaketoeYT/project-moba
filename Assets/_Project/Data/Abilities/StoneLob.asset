@@ -16,5 +16,5 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldown: 1
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 4060057051315048866, guid: 9d3590244e5aca946b31265e37b85235, type: 3}
   maxRange: 25

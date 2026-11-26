@@ -16,4 +16,4 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldown: 1
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 497306275544853204, guid: 396937f76cde272438219cb6923b0650, type: 3}

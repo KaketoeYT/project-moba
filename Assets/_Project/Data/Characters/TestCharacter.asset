@@ -16,7 +16,7 @@ MonoBehaviour:
   idea: 
   moveSpeed: 5
   maxHealth: 100
-  basicAttack: {fileID: 0}
+  basicAttack: {fileID: 11400000, guid: 3da18bad7d865b74f9c591182eb10883, type: 2}
   passive: {fileID: 0}
   ability1: {fileID: 0}
   ability2: {fileID: 0}
