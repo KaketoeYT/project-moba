@@ -1,24 +1,27 @@
 using UnityEngine;
 
-[RequireComponent(typeof(BulletVar))]
-public class BulletMove : MonoBehaviour
+namespace _Project.Scripts.Projectiles
 {
-    private void Reset()
+    [RequireComponent(typeof(BulletVar))]
+    public class BulletMove : MonoBehaviour
     {
-        bulletVar = GetComponent<BulletVar>();
-    }
+        private void Reset()
+        {
+            bulletVar = GetComponent<BulletVar>();
+        }
     
-    [SerializeField] private BulletVar bulletVar;
+        [SerializeField] private BulletVar bulletVar;
     
-    private void Start()
-    {
-        // Safety net: despawn after the configured lifetime
-        Destroy(gameObject, bulletVar.bulletDeathTime);
-    }
+        private void Start()
+        {
+            // Safety net: despawn after the configured lifetime
+            Destroy(gameObject, bulletVar.bulletDeathTime);
+        }
 
-    private void Update()
-    {
-        // bulletDirection is already a normalized direction (set by whoever spawned the bullet)
-        transform.position += bulletVar.bulletDirection * (bulletVar.bulletSpeed * Time.deltaTime);
+        private void Update()
+        {
+            // bulletDirection is already a normalized direction (set by whoever spawned the bullet)
+            transform.position += bulletVar.bulletDirection * (bulletVar.bulletSpeed * Time.deltaTime);
+        }
     }
 }

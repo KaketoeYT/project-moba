@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Abilities;
 using UnityEngine;
 
 public class PlayerInputs : MonoBehaviour

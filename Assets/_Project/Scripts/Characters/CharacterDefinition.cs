@@ -1,3 +1,4 @@
+using _Project.Scripts.Abilities;
 using UnityEngine;
 
 // A character is only data: stats plus one ability per slot.

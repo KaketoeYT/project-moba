@@ -1,3 +1,5 @@
+using _Project.Scripts.Abilities;
+using _Project.Scripts.Player;
 using UnityEngine;
 
 // "Become this character": applies a CharacterDefinition's stats and abilities to this object.

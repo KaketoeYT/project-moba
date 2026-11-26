@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using _Project.Scripts.Player;
+using _Project.Scripts.Projectiles;
 using UnityEngine;
 
 // Put this on the tower's range trigger. Fires at the closest valid target in range on a cooldown.
