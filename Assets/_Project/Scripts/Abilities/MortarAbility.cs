@@ -1,4 +1,5 @@
 using _Project.Scripts.Projectiles;
+using _Project.Scripts.Utilities;
 using UnityEngine;
 
 // Two-step ability: the first cast readies a projectile, the second launches it in an arc to the aim point.
@@ -18,6 +19,15 @@ namespace _Project.Scripts.Abilities
         public override void OnEquipped(AbilityCaster caster)
         {
             _isReady = false;
+        }
+
+        public override void OnTick(AbilityCaster caster)
+        {
+            // Range preview, only while the projectile is readied
+            if (_isReady)
+            {
+                DebugDraw.CircleOnGround(caster.CastOrigin.position, maxRange, Color.yellow);
+            }
         }
 
         public override bool Activate(in AbilityContext context)

@@ -25,6 +25,9 @@ namespace _Project.Scripts.Abilities
 
         // Called when it is removed (undo whatever OnEquipped set up)
         public virtual void OnUnequipped(AbilityCaster caster) { }
+        
+        // Called every frame while the ability is equipped (timers, toggles, previews like a range circle)
+        public virtual void OnTick(AbilityCaster caster) { }
 
         // Return true if the ability really fired: the cooldown only starts then.
         // Return false for "nothing happened" or for the first step of a two-step cast.

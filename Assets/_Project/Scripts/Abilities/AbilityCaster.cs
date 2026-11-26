@@ -99,6 +99,18 @@ namespace _Project.Scripts.Abilities
             return Mathf.Max(0f, _slots[(int)slot].ReadyTime - Time.time);
         }
 
+        private void Update()
+        {
+            // Let every equipped ability do its per-frame work (timers, range previews...)
+            foreach (SlotState state in _slots)
+            {
+                if (state.Runtime != null)
+                {
+                    state.Runtime.OnTick(this);
+                }
+            }
+        }
+        
         private void OnDestroy()
         {
             foreach (AbilitySlot slot in AbilitySlots.All)
