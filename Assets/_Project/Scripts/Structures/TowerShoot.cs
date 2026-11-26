@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.Player;
 using _Project.Scripts.Projectiles;
+using _Project.Scripts.Utilities;
 using UnityEngine;
 
 // Put this on the tower's range trigger. Fires at the closest valid target in range on a cooldown.
@@ -108,18 +109,15 @@ public class TowerShoot : MonoBehaviour
 
     private bool TryFireAt(Transform target)
     {
-        // Flat (XZ) direction for the first moment of flight, same convention as every other bullet
-        Vector3 direction = target.position - firePoint.position;
-        direction.y = 0f;
+        // Flat direction like every other bullet, height ignored
+        Vector3 direction = GamePlane.Direction(firePoint.position, target.position);
 
-        if (direction.sqrMagnitude < 0.0001f)
+        if (direction == Vector3.zero)
         {
             return false;
         }
 
-        direction.Normalize();
-
-        BulletVar bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(direction));
+        BulletVar bullet = Instantiate(bulletPrefab, GamePlane.AtProjectileHeight(firePoint.position), Quaternion.LookRotation(direction));
         bullet.bulletOwner = owner;
         bullet.bulletDirection = direction;
 

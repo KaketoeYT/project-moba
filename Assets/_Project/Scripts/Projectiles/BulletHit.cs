@@ -31,8 +31,10 @@ namespace _Project.Scripts.Projectiles
 
             _hasHit = true;
 
-            // Anything damageable (players, walls...) takes the hit; anything else solid (terrain) just stops the bullet
-            if (other.TryGetComponent(out IDamageable damageable))
+            // Look on this object and its parents, so things with several child colliders still count
+            IDamageable damageable = other.GetComponentInParent<IDamageable>();
+
+            if (damageable != null)
             {
                 damageable.TakeDamage(bulletVar.bulletDamage);
             }

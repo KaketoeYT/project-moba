@@ -8,15 +8,13 @@ namespace _Project.Scripts.Utilities
     {
         private const int CircleSegments = 48;
 
-        // A circle lying flat on the ground under 'center' (the ground is found with a raycast straight down)
+        // A circle lying flat on the ground plane, centred under 'center'
         [System.Diagnostics.Conditional("UNITY_EDITOR")]
         public static void CircleOnGround(Vector3 center, float radius, Color color)
         {
-            if (Physics.Raycast(center, Vector3.down, out RaycastHit hit, 5f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-            {
-                // Slightly above the ground so the line isn't hidden inside it
-                center.y = hit.point.y + 0.05f;
-            }
+            // Slightly above the ground so the line isn't hidden inside it
+            center = GamePlane.OnGround(center);
+            center.y += 0.05f;
 
             Circle(center, radius, color);
         }

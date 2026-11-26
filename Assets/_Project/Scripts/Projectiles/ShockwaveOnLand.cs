@@ -64,9 +64,10 @@ namespace _Project.Scripts.Projectiles
 
                 if (hit.TryGetComponent(out IShockwaveReceiver reactive))
                 {
-                    // Measured to the nearest surface, not the centre, so big things like walls react fairly.
-                    // (ClosestPoint needs a box, sphere, capsule or convex mesh collider.)
-                    float surfaceDistance = Vector3.Distance(hit.ClosestPoint(point), point);
+                    // Measured on the flat plane to the nearest surface, so big things like walls react fairly
+                    Vector3 closest = hit.ClosestPoint(point);
+                    closest.y = point.y;
+                    float surfaceDistance = Vector3.Distance(closest, point);
                     reactive.OnShockwave(point, 1f - Mathf.Clamp01(surfaceDistance / radius));
                 }
 

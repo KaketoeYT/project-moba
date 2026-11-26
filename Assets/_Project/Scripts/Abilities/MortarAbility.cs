@@ -46,18 +46,17 @@ namespace _Project.Scripts.Abilities
             }
 
             // Step 2: launch. Aiming further than maxRange lands the projectile at maxRange instead.
-            Vector3 target = context.AimPoint;
-            Vector3 offset = target - context.Origin;
-            offset.y = 0f;
+            // Everything is worked out on the flat ground plane, so heights never matter.
+            Vector3 origin = GamePlane.OnGround(context.Origin);
+            Vector3 target = GamePlane.OnGround(context.AimPoint);
+            Vector3 offset = target - origin;
 
             if (offset.magnitude > maxRange)
             {
-                float groundHeight = target.y;
-                target = context.Origin + offset.normalized * maxRange;
-                target.y = groundHeight;
+                target = origin + offset.normalized * maxRange;
             }
 
-            ArcProjectile projectile = Instantiate(projectilePrefab, context.Origin, Quaternion.identity);
+            ArcProjectile projectile = Instantiate(projectilePrefab, GamePlane.AtProjectileHeight(context.Origin), Quaternion.identity);
             projectile.Launch(context.Owner, target);
 
             _isReady = false;

@@ -1,4 +1,5 @@
 using _Project.Scripts.Structures;
+using _Project.Scripts.Utilities;
 using UnityEngine;
 
 // Places a wall at the aim point (within range), turned to face the caster.
@@ -29,31 +30,18 @@ namespace _Project.Scripts.Abilities
                 return false;
             }
 
-            Vector3 offset = context.AimPoint - context.Origin;
-            offset.y = 0f;
-            float distance = Mathf.Clamp(offset.magnitude, minRange, maxRange);
+            Vector3 origin = GamePlane.OnGround(context.Origin);
+            Vector3 aim = GamePlane.OnGround(context.AimPoint);
+            float distance = Mathf.Clamp(Vector3.Distance(origin, aim), minRange, maxRange);
 
-            Vector3 position = context.Origin + context.AimDirection * distance;
-            position.y = FindGroundHeight(position, context.AimPoint.y);
+            // Everything is placed on the ground plane, whatever is under the cursor
+            Vector3 position = origin + context.AimDirection * distance;
 
             // The wall's flat face points back at the caster
             Quaternion rotation = Quaternion.LookRotation(context.AimDirection);
 
             Instantiate(wallPrefab, position, rotation);
             return true;
-        }
-
-        // The caster's height isn't the ground's height, so look straight down for the real ground
-        private static float FindGroundHeight(Vector3 position, float fallback)
-        {
-            Vector3 rayStart = position + Vector3.up * 5f;
-
-            if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 20f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-            {
-                return hit.point.y;
-            }
-
-            return fallback;
         }
     }
 }

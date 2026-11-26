@@ -1,4 +1,5 @@
 using _Project.Scripts.Player;
+using _Project.Scripts.Utilities;
 using UnityEngine;
 
 namespace _Project.Scripts.Projectiles
@@ -9,9 +10,6 @@ namespace _Project.Scripts.Projectiles
 
         [Tooltip("How fast the bullet can turn towards its target, in degrees per second")]
         [SerializeField, Min(0f)] private float turnSpeed = 360f;
-
-        [Tooltip("On: only steer sideways (bullet keeps its spawn height). Off: also steer up and down.")]
-        [SerializeField] private bool steerOnFlatPlane = true;
 
         private Transform _target;
 
@@ -67,20 +65,16 @@ namespace _Project.Scripts.Projectiles
                 return;
             }
 
-            Vector3 toTarget = _target.position - transform.position;
+            // Flat direction to the target, height ignored
+            Vector3 toTarget = GamePlane.Direction(transform.position, _target.position);
 
-            if (steerOnFlatPlane)
-            {
-                toTarget.y = 0f;
-            }
-
-            if (toTarget.sqrMagnitude < 0.0001f)
+            if (toTarget == Vector3.zero)
             {
                 return;
             }
 
             float maxTurn = turnSpeed * Mathf.Deg2Rad * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(bulletVar.bulletDirection, toTarget.normalized, maxTurn, 0f);
+            Vector3 newDirection = Vector3.RotateTowards(bulletVar.bulletDirection, toTarget, maxTurn, 0f);
 
             bulletVar.bulletDirection = newDirection;
             transform.rotation = Quaternion.LookRotation(newDirection);

@@ -1,4 +1,5 @@
 using _Project.Scripts.Projectiles;
+using _Project.Scripts.Utilities;
 using UnityEngine;
 
 namespace _Project.Scripts.Abilities
@@ -22,7 +23,7 @@ namespace _Project.Scripts.Abilities
                 return false;
             }
 
-            BulletVar bullet = Instantiate(projectilePrefab, context.Origin, Quaternion.LookRotation(context.AimDirection));
+            BulletVar bullet = Instantiate(projectilePrefab, GamePlane.AtProjectileHeight(context.Origin), Quaternion.LookRotation(context.AimDirection));
             bullet.bulletOwner = context.Owner;
             bullet.bulletDirection = context.AimDirection;
             return true;
