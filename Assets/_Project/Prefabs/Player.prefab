@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 9109037191474279142}
   - component: {fileID: 4346199933454535092}
   - component: {fileID: 5875475125516698319}
+  - component: {fileID: 4757364096753714792}
   m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
@@ -167,6 +168,7 @@ MonoBehaviour:
   playerStats: {fileID: 4478160537470552337}
   characterController: {fileID: 8396457142368131655}
   forceReceiver: {fileID: 244778883644326821}
+  movementLock: {fileID: 0}
 --- !u!114 &244778883644326821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +262,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Player.ForceReceiver
   drag: 5
+--- !u!114 &4757364096753714792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2395502189899357894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d544261097cc49d418578bc2943a1360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Player.MovementLock
 --- !u!1 &3544463636414202502
 GameObject:
   m_ObjectHideFlags: 0

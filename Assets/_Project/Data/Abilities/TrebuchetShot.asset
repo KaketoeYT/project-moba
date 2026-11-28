@@ -16,4 +16,5 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldown: 1
+  standStillDuration: 0.1
   projectilePrefab: {fileID: 497306275544853204, guid: 4d668e4c10f0f954889a6f2f221aecd9, type: 3}

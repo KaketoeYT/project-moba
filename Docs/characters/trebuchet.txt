@@ -8,11 +8,14 @@
 ------------------------------------------------
 
 IDEA:
-	A zoning type mage, which does more poking than hard bursts.
+	A zoning type mage, which focuses on long-range poking, artillery and area denial rather than hard bursts of damage.
 
 DESIGN:
-	part of The living weapons
+	Part of The Living Weapons.
 
+	A siege-engine themed mage inspired by Xerath and Anivia.
+	Trebuchet controls the battlefield through long-range bombardment,
+	destructible structures and temporary terrain manipulation.
 
 ---------------------------------
     _   _    _ _ _ _   _        
@@ -24,38 +27,124 @@ DESIGN:
 
 Basic attack
 
-Slow rate - Long Ranged
-Shots come from the trebuchet.
+	Rate - Slow | Range - Long
+
+	Fires a small projectile from the trebuchet.
+
+	NUMBERS: (optional)
+		Damage:
 
 ---------------------------------
 
-Ability 1 :
-	ON FIRST CAST: 
-		you pickup a stone and ready your trebuchet
+Ability 0 - Passive
+	Name: Rangefinder
 
-	ON SECOND CAST: 
-		you fire the trebuchet arching upwards like a mortar,
-		the stone lands and leaves a small crater (You cant walk over craters).
-		and on impact it sends a small shockwave that pushes everything away from the impact area.
+	Basic attacks that hit an enemy mark them for a short duration.
 
+	When Trebuchet hits a marked enemy with Ability 1, the mark is consumed
+	and the mortar impact creates a slightly larger shockwave.
 
-Ability 2:
+	NUMBERS: (optional)
+		Mark Duration:
+		Bonus Shockwave Size:
+
+---------------------------------
+
+Ability 1
+	Name: Catapult
+
+	ON FIRST CAST:
+		Pick up a stone and load it into the trebuchet, preparing to fire.
+
+	ON SECOND CAST:
+		Fire the trebuchet, launching the stone in a high arc like a mortar.
+
+		On impact, the stone creates a small crater that cannot be walked over.
+
+		The impact also releases a shockwave, pushing nearby entities away
+		from the landing point.
+
+	NUMBERS: (optional)
+		Cooldown:
+		Damage:
+		Crater Duration:
+		Shockwave Range:
+
+---------------------------------
+
+Ability 2
+	Name: Fortification
+
 	ON CAST:
-		Place a wall, this wall has health and can be torn down after a few hits
+		Place a destructible wall at the target location.
+
+		The wall has its own health and can be destroyed after taking several hits.
+
+		The wall blocks movement until destroyed.
 
 	Passive:
-		When a stone of Ability 1 last hits the wall, 
-		the wall falls down and leaves rubble on the other side of where hit from.
-		You are unable to walk over rubble, this rubble disappears after a bit.
+		When a stone fired by Ability 1 destroys the wall, it collapses
+		and leaves rubble on the opposite side of the impact.
 
+		The rubble cannot be walked over and disappears after a short time.
 
-Ability 3:
+	NUMBERS: (optional)
+		Cooldown:
+		Wall Health:
+		Rubble Duration:
+
+---------------------------------
+
+Ability 3
+	Name: Counterweight
+
 	ON CAST:
-		description
+		Release the counterweight of the trebuchet in a chosen direction.
 
+		The counterweight travels a short distance, dealing minor damage
+		and knocking enemies away.
 
-Ability 4 (ULT):
+		The recoil pushes Trebuchet in the opposite direction.
+
+	NUMBERS: (optional)
+		Cooldown:
+		Damage:
+		Knockback:
+
+---------------------------------
+
+Ability 4 (ULT)
+	Name: Siege Protocol
+
 	ON CAST:
-		description
-		
+		Select a large target area.
+
+		Trebuchet begins loading and firing several massive stones
+		into the designated area.
+
+		Each stone lands after a short delay, dealing moderate damage
+		and creating a small shockwave.
+
+		The impacts leave temporary craters, restricting movement
+		through the affected area.
+
+		The final impact deals increased damage and knocks enemies away.
+
+	NUMBERS: (optional)
+		Cooldown:
+		Duration:
+		Damage:
+		Impact Count:
+
+---------------------------------
+
+SYNERGIES: (optional)
+	Works well with:
+		Characters who can group enemies together or force them
+		into narrow spaces.
+
+	Struggles against:
+		Highly mobile characters who can quickly close the distance
+		or dodge delayed artillery strikes.
+
 ---------------------------------

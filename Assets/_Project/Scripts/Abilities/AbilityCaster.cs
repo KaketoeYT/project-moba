@@ -1,3 +1,4 @@
+using _Project.Scripts.Player;
 using UnityEngine;
 
 // Put this on anything that can use abilities (players now, maybe towers or minions later).
@@ -19,6 +20,9 @@ namespace _Project.Scripts.Abilities
         // Created here (not in Awake) so Equip works no matter which script runs first
         private readonly SlotState[] _slots = CreateSlots();
 
+        // Optional: lets abilities make the caster stand still. Found automatically if on the same object.
+        private MovementLock _movementLock;
+
         public Transform CastOrigin => castOrigin != null ? castOrigin : transform;
 
         private static SlotState[] CreateSlots()
@@ -30,6 +34,11 @@ namespace _Project.Scripts.Abilities
             }
 
             return slots;
+        }
+
+        private void Awake()
+        {
+            TryGetComponent(out _movementLock);
         }
 
         // Put an ability in a slot (null empties it). Replaces whatever was there.
@@ -66,7 +75,7 @@ namespace _Project.Scripts.Abilities
             state.Runtime = null;
         }
 
-        // Returns true if the ability fired
+        // Returns true if the ability fired and started its cooldown
         public bool TryCast(AbilitySlot slot, Vector3 aimPoint)
         {
             SlotState state = _slots[(int)slot];
@@ -87,10 +96,63 @@ namespace _Project.Scripts.Abilities
             return true;
         }
 
+        // Starts the full cooldown of an equipped ability. For abilities that end on their own
+        // (a toggle that times out), so they can't rely on returning true from Activate.
+        public void StartCooldown(AbilityDefinition ability)
+        {
+            StartCooldown(ability, ability.Cooldown);
+        }
+
+        // Starts a cooldown of a custom length (e.g. the shorter one after a readied ability times out)
+        public void StartCooldown(AbilityDefinition ability, float duration)
+        {
+            if (duration <= 0f)
+            {
+                return;
+            }
+
+            foreach (SlotState state in _slots)
+            {
+                if (state.Runtime == ability)
+                {
+                    state.ReadyTime = Time.time + duration;
+                    return;
+                }
+            }
+        }
+
+        // Stops this caster from moving for a while. Abilities call this for their stand-still.
+        public void LockMovement(float duration)
+        {
+            if (_movementLock != null && duration > 0f)
+            {
+                _movementLock.Lock(duration);
+            }
+        }
+
+        // Interrupts everything the caster is doing (stun, death...)
+        public void CancelAll()
+        {
+            foreach (SlotState state in _slots)
+            {
+                if (state.Runtime != null)
+                {
+                    state.Runtime.Cancel(this);
+                }
+            }
+        }
+
         // The asset in a slot (null if empty). Handy for copying another caster's ability.
         public AbilityDefinition GetDefinition(AbilitySlot slot)
         {
             return _slots[(int)slot].Source;
+        }
+
+        // True while the ability in that slot is readied or switched on. For UI later.
+        public bool IsActive(AbilitySlot slot)
+        {
+            AbilityDefinition runtime = _slots[(int)slot].Runtime;
+            return runtime != null && runtime.IsActive;
         }
 
         // Seconds left on the cooldown (0 = ready). For UI later.
@@ -110,7 +172,7 @@ namespace _Project.Scripts.Abilities
                 }
             }
         }
-        
+
         private void OnDestroy()
         {
             foreach (AbilitySlot slot in AbilitySlots.All)

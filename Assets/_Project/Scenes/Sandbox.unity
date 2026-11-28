@@ -462,6 +462,10 @@ PrefabInstance:
       propertyPath: character
       value: 
       objectReference: {fileID: 11400000, guid: f775aab17837a8b49ab9aeb35218d993, type: 2}
+    - target: {fileID: 4478160537470552337, guid: d694157d54b68354b8b4312e494f4200, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 5588714154469360392, guid: d694157d54b68354b8b4312e494f4200, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -611,9 +615,6 @@ MonoBehaviour:
   Hit: {x: 0, y: 0, z: 0}
   cam: {fileID: 652078219}
   Sphere: {fileID: 342644943}
-  hitMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,8 +1117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5ec670be897ca4aa90e1e81965be10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 5
-  cameraEdgeDistance: 0.05
+  cameraSpeed: 15
+  cameraEdgeDistance: 0.1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

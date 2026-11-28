@@ -6,7 +6,7 @@ using UnityEngine;
 namespace _Project.Scripts.Abilities
 {
     [CreateAssetMenu(menuName = "MOBA/Abilities/Place Wall", fileName = "NewWallAbility")]
-    public class WallAbility : AbilityDefinition
+    public class WallAbility : InstantAbility
     {
         [SerializeField] private Wall wallPrefab;
 
@@ -16,7 +16,7 @@ namespace _Project.Scripts.Abilities
         [Tooltip("Closest the wall can be placed, so it never appears on top of the caster")]
         [SerializeField, Min(0f)] private float minRange = 2f;
 
-        public override bool Activate(in AbilityContext context)
+        protected override bool Perform(in AbilityContext context)
         {
             if (wallPrefab == null)
             {

@@ -5,11 +5,11 @@ using UnityEngine;
 namespace _Project.Scripts.Abilities
 {
     [CreateAssetMenu(menuName = "MOBA/Abilities/Projectile", fileName = "NewProjectileAbility")]
-    public class ProjectileAbility : AbilityDefinition
+    public class ProjectileAbility : InstantAbility
     {
         [SerializeField] private BulletVar projectilePrefab;
 
-        public override bool Activate(in AbilityContext context)
+        protected override bool Perform(in AbilityContext context)   
         {
             if (projectilePrefab == null)
             {

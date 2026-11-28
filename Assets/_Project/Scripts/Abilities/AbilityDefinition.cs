@@ -1,6 +1,10 @@
 using UnityEngine;
 
-// Base class for every ability. Make a new kind of ability by inheriting from this.
+// Base class for every ability. In most cases don't inherit from this directly,
+// pick the base class that matches how the ability is used:
+//   InstantAbility - does its thing when you press the button (basic attacks, walls, dashes)
+//   TwoStepAbility - press once to ready, press again to launch (stone lob)
+//   ToggleAbility  - press to switch on, press again to switch off (mounts, shields)
 namespace _Project.Scripts.Abilities
 {
     public abstract class AbilityDefinition : ScriptableObject
@@ -17,6 +21,9 @@ namespace _Project.Scripts.Abilities
         public Sprite Icon => icon;
         public float Cooldown => cooldown;
 
+        // True while the ability is in the middle of something (readied, switched on...). For UI and queries.
+        public virtual bool IsActive => false;
+
         // The caster works on its own private copy of this asset, so fields you add in
         // subclasses are safe to use as per-caster state (timers, "is toggled on", etc.)
 
@@ -25,12 +32,14 @@ namespace _Project.Scripts.Abilities
 
         // Called when it is removed (undo whatever OnEquipped set up)
         public virtual void OnUnequipped(AbilityCaster caster) { }
-        
+
         // Called every frame while the ability is equipped (timers, toggles, previews like a range circle)
         public virtual void OnTick(AbilityCaster caster) { }
 
-        // Return true if the ability really fired: the cooldown only starts then.
-        // Return false for "nothing happened" or for the first step of a two-step cast.
+        // Interrupt whatever the ability is doing (stun, death, character swap). Safe to call at any time.
+        public virtual void Cancel(AbilityCaster caster) { }
+
+        // Called when the button is pressed. Return true to start the cooldown.
         public abstract bool Activate(in AbilityContext context);
     }
 }
