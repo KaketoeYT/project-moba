@@ -36,6 +36,22 @@ namespace _Project.Scripts.Controls
             caster = GetComponent<AbilityCaster>();
         }
 
+        // The key bound to a slot, so UI can show it. False if the slot has no key.
+        public bool TryGetKey(AbilitySlot slot, out KeyCode key)
+        {
+            foreach (SlotBinding binding in abilityBindings)
+            {
+                if (binding.slot == slot)
+                {
+                    key = binding.key;
+                    return true;
+                }
+            }
+
+            key = KeyCode.None;
+            return false;
+        }
+
         private void Awake()
         {
             if (mousePos == null && !Camera.main.TryGetComponent(out mousePos))

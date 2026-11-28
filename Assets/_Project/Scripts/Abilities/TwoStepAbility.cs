@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-// Press once to ready, press again to launch. The cooldown starts when it launches.
+// Press once to ready, press again to launch. The cost is paid and the cooldown starts when it launches
+// (you need enough to ready it too, so you don't ready something you can't throw).
 // Inherit from this and write Launch; override the On... methods only if you need them.
 namespace _Project.Scripts.Abilities
 {
@@ -30,6 +31,11 @@ namespace _Project.Scripts.Abilities
 
         public sealed override bool Activate(in AbilityContext context)
         {
+            if (!context.Caster.CanAfford(Cost))
+            {
+                return false;
+            }
+
             // Step 1: ready. No cooldown yet, so we return false.
             if (!_isReady)
             {
@@ -47,6 +53,7 @@ namespace _Project.Scripts.Abilities
             }
 
             _isReady = false;
+            context.Caster.TryPay(Cost);
             context.Caster.LockMovement(launchStandStill);
             return true;
         }

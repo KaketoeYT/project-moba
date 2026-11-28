@@ -15,6 +15,7 @@ namespace _Project.Scripts.Abilities
             public AbilityDefinition Source;  // the asset you assigned
             public AbilityDefinition Runtime; // this caster's own private copy
             public float ReadyTime;           // Time.time when it can be cast again
+            public float CooldownLength;      // length of the cooldown that is running (for UI)
         }
 
         // Created here (not in Awake) so Equip works no matter which script runs first
@@ -23,7 +24,13 @@ namespace _Project.Scripts.Abilities
         // Optional: lets abilities make the caster stand still. Found automatically if on the same object.
         private MovementLock _movementLock;
 
+        // Optional: what abilities cost. Without one, everything is free.
+        private CharacterResource _resource;
+
         public Transform CastOrigin => castOrigin != null ? castOrigin : transform;
+
+        // What this caster pays with (null = everything is free). For UI.
+        public CharacterResource Resource => FindResource();
 
         private static SlotState[] CreateSlots()
         {
@@ -57,6 +64,7 @@ namespace _Project.Scripts.Abilities
             state.Runtime = Instantiate(definition);
             state.Runtime.name = definition.name;
             state.ReadyTime = 0f;
+            state.CooldownLength = 0f;
             state.Runtime.OnEquipped(this);
         }
 
@@ -93,6 +101,7 @@ namespace _Project.Scripts.Abilities
             }
 
             state.ReadyTime = Time.time + state.Runtime.Cooldown;
+            state.CooldownLength = state.Runtime.Cooldown;
             return true;
         }
 
@@ -116,9 +125,41 @@ namespace _Project.Scripts.Abilities
                 if (state.Runtime == ability)
                 {
                     state.ReadyTime = Time.time + duration;
+                    state.CooldownLength = duration;
                     return;
                 }
             }
+        }
+
+        // True if the caster can pay this amount right now. Abilities check this before doing anything.
+        public bool CanAfford(float cost)
+        {
+            return FindResource() == null || _resource.CanAfford(cost);
+        }
+
+        // True if the ability in this slot could be paid for right now. For UI (greying out icons).
+        public bool CanAfford(AbilitySlot slot)
+        {
+            AbilityDefinition runtime = _slots[(int)slot].Runtime;
+            return runtime == null || CanAfford(runtime.Cost);
+        }
+
+        // Pays a cost. Returns false (and pays nothing) if there isn't enough.
+        // The ability base classes call this at the moment the ability really happens.
+        public bool TryPay(float cost)
+        {
+            return FindResource() == null || _resource.TrySpend(cost);
+        }
+
+        // Looked up on demand, because CharacterLoadout may add the component after our Awake
+        private CharacterResource FindResource()
+        {
+            if (_resource == null)
+            {
+                TryGetComponent(out _resource);
+            }
+
+            return _resource;
         }
 
         // Stops this caster from moving for a while. Abilities call this for their stand-still.
@@ -148,17 +189,30 @@ namespace _Project.Scripts.Abilities
             return _slots[(int)slot].Source;
         }
 
-        // True while the ability in that slot is readied or switched on. For UI later.
+        // True while the ability in that slot is readied or switched on
         public bool IsActive(AbilitySlot slot)
         {
             AbilityDefinition runtime = _slots[(int)slot].Runtime;
             return runtime != null && runtime.IsActive;
         }
 
-        // Seconds left on the cooldown (0 = ready). For UI later.
+        // Seconds left on the cooldown (0 = ready)
         public float GetCooldownRemaining(AbilitySlot slot)
         {
             return Mathf.Max(0f, _slots[(int)slot].ReadyTime - Time.time);
+        }
+
+        // How much of the running cooldown is left, from 1 (just started) to 0 (ready). For cooldown overlays.
+        public float GetCooldownFraction(AbilitySlot slot)
+        {
+            SlotState state = _slots[(int)slot];
+
+            if (state.CooldownLength <= 0f)
+            {
+                return 0f;
+            }
+
+            return Mathf.Clamp01((state.ReadyTime - Time.time) / state.CooldownLength);
         }
 
         private void Update()

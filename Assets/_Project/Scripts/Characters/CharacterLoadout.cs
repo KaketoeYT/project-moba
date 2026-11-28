@@ -10,7 +10,18 @@ public class CharacterLoadout : MonoBehaviour
     [SerializeField] private AbilityCaster caster;
     [SerializeField] private PlayerStats playerStats;
 
+    private CharacterResource _resource;
+
     public CharacterDefinition Character => character;
+
+    private void Awake()
+    {
+        // Added automatically if missing, so older prefabs keep working. Done in Awake so the HUD finds it in Start.
+        if (!TryGetComponent(out _resource))
+        {
+            _resource = gameObject.AddComponent<CharacterResource>();
+        }
+    }
 
     // Called by Unity when you add the component in the editor: auto-fills the references
     private void Reset()
@@ -37,6 +48,9 @@ public class CharacterLoadout : MonoBehaviour
         {
             playerStats.SetBaseStats(definition.MoveSpeed, definition.MaxHealth);
         }
+
+        _resource.Setup(definition.ResourceMode, definition.Resource,
+            definition.ResourceMax, definition.ResourceRegenPerSecond);
 
         foreach (AbilitySlot slot in AbilitySlots.All)
         {

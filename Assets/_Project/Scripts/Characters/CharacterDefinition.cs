@@ -1,4 +1,5 @@
 using _Project.Scripts.Abilities;
+using _Project.Scripts.Player;
 using UnityEngine;
 
 // A character is only data: stats plus one ability per slot.
@@ -13,6 +14,19 @@ public class CharacterDefinition : ScriptableObject
     [SerializeField, Min(0f)] private float moveSpeed = 5f;
     [SerializeField, Min(1f)] private float maxHealth = 100f;
 
+    [Header("Resource")]
+    [Tooltip("None: abilities are free. Health: abilities cost HP. Custom: uses the Resource below (mana, energy, blood...)")]
+    [SerializeField] private ResourceMode resourceMode;
+
+    [Tooltip("Only used when Resource Mode is Custom. Create one with Create > MOBA > Resource")]
+    [SerializeField] private ResourceDefinition resource;
+
+    [Tooltip("Only used when Resource Mode is Custom: how much this character can hold")]
+    [SerializeField, Min(1f)] private float resourceMax = 100f;
+
+    [Tooltip("Only used when Resource Mode is Custom: gained per second. Negative drains it on its own (rage that fades)")]
+    [SerializeField] private float resourceRegenPerSecond = 5f;
+
     [Header("Abilities")]
     [SerializeField] private AbilityDefinition basicAttack;
     [SerializeField] private AbilityDefinition passive;
@@ -25,6 +39,10 @@ public class CharacterDefinition : ScriptableObject
     public string Idea => idea;
     public float MoveSpeed => moveSpeed;
     public float MaxHealth => maxHealth;
+    public ResourceMode ResourceMode => resourceMode;
+    public ResourceDefinition Resource => resource;
+    public float ResourceMax => resourceMax;
+    public float ResourceRegenPerSecond => resourceRegenPerSecond;
 
     public AbilityDefinition GetAbility(AbilitySlot slot)
     {

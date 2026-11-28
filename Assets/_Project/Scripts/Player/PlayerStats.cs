@@ -60,6 +60,22 @@ namespace _Project.Scripts.Player
             }
         }
 
+        // Health spent as an ability cost. CharacterResource makes sure it never takes the last HP.
+        public void PayHealth(float amount)
+        {
+            if (IsDead || amount <= 0f)
+            {
+                return;
+            }
+
+            health = Mathf.Max(health - amount, 0f);
+
+            if (IsDead)
+            {
+                Die();
+            }
+        }
+
         private void Die()
         {
             Died?.Invoke();

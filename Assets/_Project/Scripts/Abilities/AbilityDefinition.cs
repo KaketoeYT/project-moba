@@ -16,10 +16,14 @@ namespace _Project.Scripts.Abilities
         [Tooltip("Seconds before this ability can be used again")]
         [SerializeField, Min(0f)] private float cooldown = 1f;
 
+        [Tooltip("Paid with whatever the character uses (mana, energy, HP...). 0 = free. Ignored by characters without a resource")]
+        [SerializeField, Min(0f)] private float cost;
+
         public string DisplayName => string.IsNullOrEmpty(displayName) ? name : displayName;
         public string Description => description;
         public Sprite Icon => icon;
         public float Cooldown => cooldown;
+        public float Cost => cost;
 
         // True while the ability is in the middle of something (readied, switched on...). For UI and queries.
         public virtual bool IsActive => false;

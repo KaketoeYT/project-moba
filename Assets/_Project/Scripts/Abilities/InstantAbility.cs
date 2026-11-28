@@ -11,16 +11,18 @@ namespace _Project.Scripts.Abilities
 
         public sealed override bool Activate(in AbilityContext context)
         {
-            if (!Perform(in context))
+            if (!context.Caster.CanAfford(Cost) || !Perform(in context))
             {
                 return false;
             }
 
+            context.Caster.TryPay(Cost);
             context.Caster.LockMovement(standStillDuration);
             return true;
         }
 
-        // Do the ability. Return false if nothing happened (no cooldown, no stand-still).
+        // Do the ability. Return false if nothing happened (no cost, no cooldown, no stand-still).
+        // Only called when the caster can pay the Cost.
         protected abstract bool Perform(in AbilityContext context);
     }
 }

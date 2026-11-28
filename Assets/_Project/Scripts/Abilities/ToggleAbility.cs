@@ -2,6 +2,7 @@ using UnityEngine;
 
 // Press to switch on, press again to switch off. The cooldown starts when it switches OFF,
 // including when it switches itself off (max duration, interrupt, unequip).
+// The cost is paid when switching on; Cost Per Second drains while on and switches it off when you run out.
 // Inherit from this and override the On... methods you need.
 namespace _Project.Scripts.Abilities
 {
@@ -18,6 +19,10 @@ namespace _Project.Scripts.Abilities
         [Tooltip("Seconds until it switches itself off (0 = stays on until you switch it off)")]
         [SerializeField, Min(0f)] private float maxDuration;
 
+        [Header("Upkeep")]
+        [Tooltip("Resource drained every second while on. Switches off when the caster can't pay (0 = free to keep on)")]
+        [SerializeField, Min(0f)] private float costPerSecond;
+
         // Per-caster state. Safe, because every caster works on its own private copy of this asset.
         private bool _isOn;
         private float _offAt;
@@ -28,11 +33,12 @@ namespace _Project.Scripts.Abilities
         {
             if (!_isOn)
             {
-                if (!CanSwitchOn(in context))
+                if (!context.Caster.CanAfford(Cost) || !CanSwitchOn(in context))
                 {
                     return false;
                 }
 
+                context.Caster.TryPay(Cost);
                 _isOn = true;
                 _offAt = maxDuration > 0f ? Time.time + maxDuration : float.PositiveInfinity;
                 OnSwitchedOn(in context);
@@ -56,6 +62,12 @@ namespace _Project.Scripts.Abilities
             }
 
             if (Time.time >= _offAt)
+            {
+                SwitchOff(caster);
+                return;
+            }
+
+            if (costPerSecond > 0f && !caster.TryPay(costPerSecond * Time.deltaTime))
             {
                 SwitchOff(caster);
                 return;
