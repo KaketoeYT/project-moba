@@ -16,6 +16,7 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldown: 8
+  cost: 60
   standStillDuration: 0.2
   wallPrefab: {fileID: 7413475784880307690, guid: c2f1bc6c628d3d24395d8b8f200449e4, type: 3}
   maxRange: 8

@@ -16,6 +16,7 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldown: 6
+  cost: 40
   readyStandStill: 0.2
   readyTimeout: 5
   timeoutCooldown: 6
