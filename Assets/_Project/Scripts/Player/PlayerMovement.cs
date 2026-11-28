@@ -1,15 +1,16 @@
+using _Project.Scripts.FlatPhysics;
 using UnityEngine;
-using UnityEngine.Serialization;
 
+// Walks the character on the flat game plane. Height never changes; walls are handled by FlatWorld.
 namespace _Project.Scripts.Player
 {
-    [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(FlatCollider))]
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private PlayerStats playerStats;
 
-        [FormerlySerializedAs("CharacterController")]
-        [SerializeField] private CharacterController characterController;
+        [Tooltip("This character's body. Found automatically if on the same object.")]
+        [SerializeField] private FlatCollider body;
 
         // Optional: lets shockwaves and knockbacks push this character. Found automatically if on the same object.
         [SerializeField] private ForceReceiver forceReceiver;
@@ -17,22 +18,20 @@ namespace _Project.Scripts.Player
         // Optional: lets abilities (or stuns later) stop this character from moving. Found automatically too.
         [SerializeField] private MovementLock movementLock;
 
-        private float _verticalVelocity;
-
         // Called by Unity when you add the component in the editor: auto-fills the references
         private void Reset()
         {
             playerStats = GetComponent<PlayerStats>();
-            characterController = GetComponent<CharacterController>();
+            body = GetComponent<FlatCollider>();
             forceReceiver = GetComponent<ForceReceiver>();
             movementLock = GetComponent<MovementLock>();
         }
 
         private void Awake()
         {
-            if (characterController == null)
+            if (body == null)
             {
-                characterController = GetComponent<CharacterController>();
+                body = GetComponent<FlatCollider>();
             }
 
             if (forceReceiver == null)
@@ -64,18 +63,9 @@ namespace _Project.Scripts.Player
                 velocity += forceReceiver.Velocity;
             }
 
-            // CharacterController has no built-in gravity. A small downward push while grounded
-            // keeps isGrounded reliable and makes the player follow terrain slopes.
-            if (characterController.isGrounded && _verticalVelocity < 0f)
-            {
-                _verticalVelocity = -2f;
-            }
-
-            _verticalVelocity += Physics.gravity.y * Time.deltaTime;
-            velocity.y = _verticalVelocity;
-
-            // One Move call per frame, with everything combined
-            characterController.Move(velocity * Time.deltaTime);
+            // One move per frame, with everything combined. Also runs when standing still,
+            // so a wall placed on top of you pushes you out.
+            FlatWorld.MoveAndSlide(body, velocity * Time.deltaTime);
         }
     }
 }

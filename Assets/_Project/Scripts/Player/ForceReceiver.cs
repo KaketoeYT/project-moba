@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Lets outside forces (shockwaves, knockbacks) push a character that moves with a CharacterController.
+// Lets outside forces (shockwaves, knockbacks) push a character that moves with PlayerMovement.
 // PlayerMovement reads Velocity every frame; this script just makes the push fade out.
 namespace _Project.Scripts.Player
 {

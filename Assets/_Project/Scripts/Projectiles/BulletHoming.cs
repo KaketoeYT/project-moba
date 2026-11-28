@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using _Project.Scripts.FlatPhysics;
 using _Project.Scripts.Player;
 using _Project.Scripts.Utilities;
 using UnityEngine;
@@ -11,7 +13,13 @@ namespace _Project.Scripts.Projectiles
         [Tooltip("How fast the bullet can turn towards its target, in degrees per second")]
         [SerializeField, Min(0f)] private float turnSpeed = 360f;
 
+        // Shared by every bullet: only used inside one call
+        private static readonly List<FlatCollider> InZone = new List<FlatCollider>();
+
         private Transform _target;
+
+        // Optional detection zone: a FlatCollider set to Is Trigger on this same object
+        private FlatCollider _zone;
 
         // Called by spawners that already know their target (e.g. towers).
         // The bullet then homes in from any distance, no detection zone needed.
@@ -27,38 +35,43 @@ namespace _Project.Scripts.Projectiles
             bulletVar = GetComponentInParent<BulletVar>();
         }
 
-        // Detection-zone mode: when this sits on a trigger collider, lock onto the first valid thing that enters
-        private void OnTriggerEnter(Collider other)
+        private void Awake()
         {
-            // Already locked on to something
-            if (_target != null)
+            if (TryGetComponent(out _zone) && !_zone.IsTrigger)
             {
-                return;
+                _zone = null;
             }
+        }
 
-            // Ignore other trigger zones
-            if (other.isTrigger)
+        // Detection-zone mode: lock onto the first character inside the zone
+        private void FindTarget()
+        {
+            FlatWorld.Overlap(_zone, InZone);
+
+            foreach (FlatCollider other in InZone)
             {
-                return;
-            }
+                // Never home in on whoever fired the bullet (including their child colliders)
+                if (bulletVar.bulletOwner != null && other.transform.IsChildOf(bulletVar.bulletOwner.transform))
+                {
+                    continue;
+                }
 
-            // Never home in on whoever fired the bullet (including their child colliders)
-            if (bulletVar.bulletOwner != null && other.transform.IsChildOf(bulletVar.bulletOwner.transform))
-            {
-                return;
+                // Only lock onto characters, not walls
+                if (other.TryGetComponent<PlayerStats>(out _))
+                {
+                    _target = other.transform;
+                    return;
+                }
             }
-
-            // Only lock onto things that can actually take damage, not walls or terrain
-            if (!other.TryGetComponent<PlayerStats>(out _))
-            {
-                return;
-            }
-
-            _target = other.transform;
         }
 
         private void Update()
         {
+            if (_target == null && _zone != null)
+            {
+                FindTarget();
+            }
+
             // Unity's == null also covers the target having been destroyed
             if (_target == null)
             {

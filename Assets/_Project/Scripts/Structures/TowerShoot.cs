@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using _Project.Scripts.FlatPhysics;
 using _Project.Scripts.Player;
 using _Project.Scripts.Projectiles;
 using _Project.Scripts.Utilities;
 using UnityEngine;
 
-// Put this on the tower's range trigger. Fires at the closest valid target in range on a cooldown.
-[RequireComponent(typeof(Collider))]
+// Put this on the tower's range: a FlatCollider set to Is Trigger. Fires at the closest character inside it on a cooldown.
+[RequireComponent(typeof(FlatCollider))]
 public class TowerShoot : MonoBehaviour
 {
     [SerializeField] private BulletVar bulletPrefab;
@@ -19,11 +20,16 @@ public class TowerShoot : MonoBehaviour
     [Tooltip("Seconds between shots")]
     [SerializeField, Min(0.05f)] private float fireInterval = 1.5f;
 
-    private readonly List<Transform> _targets = new List<Transform>();
+    // Shared by every tower: only used inside one call
+    private static readonly List<FlatCollider> InRange = new List<FlatCollider>();
+
+    private FlatCollider _range;
     private float _nextFireTime;
 
     private void Awake()
     {
+        _range = GetComponent<FlatCollider>();
+
         if (owner == null)
         {
             owner = transform.parent != null ? transform.parent.gameObject : gameObject;
@@ -33,31 +39,6 @@ public class TowerShoot : MonoBehaviour
         {
             firePoint = transform;
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        // Ignore trigger zones and the tower's own colliders
-        if (other.isTrigger || other.transform.IsChildOf(owner.transform))
-        {
-            return;
-        }
-
-        // Only things that can take damage count as targets
-        if (!other.TryGetComponent<PlayerStats>(out _))
-        {
-            return;
-        }
-
-        if (!_targets.Contains(other.transform))
-        {
-            _targets.Add(other.transform);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        _targets.Remove(other.transform);
     }
 
     private void Update()
@@ -81,26 +62,25 @@ public class TowerShoot : MonoBehaviour
 
     private Transform GetClosestTarget()
     {
+        FlatWorld.Overlap(_range, InRange);
+
         Transform closest = null;
         float closestSqrDistance = float.MaxValue;
+        Vector2 center = _range.Center;
 
-        // Loop backwards so destroyed targets can be removed safely while iterating.
-        // OnTriggerExit isn't called for objects that get destroyed inside the range.
-        for (int i = _targets.Count - 1; i >= 0; i--)
+        foreach (FlatCollider candidate in InRange)
         {
-            Transform candidate = _targets[i];
-
-            if (candidate == null)
+            // Never the tower itself, and only characters count as targets
+            if (candidate.transform.IsChildOf(owner.transform) || !candidate.TryGetComponent<PlayerStats>(out _))
             {
-                _targets.RemoveAt(i);
                 continue;
             }
 
-            float sqrDistance = (candidate.position - transform.position).sqrMagnitude;
+            float sqrDistance = (candidate.Center - center).sqrMagnitude;
             if (sqrDistance < closestSqrDistance)
             {
                 closestSqrDistance = sqrDistance;
-                closest = candidate;
+                closest = candidate.transform;
             }
         }
 

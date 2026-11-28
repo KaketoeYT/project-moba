@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Mana
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Player.ResourceDefinition
   displayName: Mana
-  color: {r: 0.25, g: 0.55, b: 1, a: 1}
+  color: {r: 0.2509804, g: 0.54901963, b: 1, a: 1}
   startFraction: 1

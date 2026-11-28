@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using _Project.Scripts.Combat;
+using _Project.Scripts.FlatPhysics;
 using _Project.Scripts.Player;
 using UnityEngine;
 
@@ -20,8 +22,8 @@ namespace _Project.Scripts.Projectiles
 
         [SerializeField] private LayerMask affectedLayers = ~0;
 
-        // Reused for every shockwave instead of allocating a new array each time (holds up to 32 colliders)
-        private static readonly Collider[] HitBuffer = new Collider[32];
+        // Reused for every shockwave instead of allocating a new list each time
+        private static readonly List<FlatCollider> Hits = new List<FlatCollider>();
 
         private ArcProjectile _projectile;
 
@@ -45,13 +47,12 @@ namespace _Project.Scripts.Projectiles
 
         private void OnLanded(Vector3 point)
         {
-            int count = Physics.OverlapSphereNonAlloc(point, radius, HitBuffer, affectedLayers, QueryTriggerInteraction.Ignore);
+            Vector2 flatPoint = FlatWorld.ToFlat(point);
+            FlatWorld.OverlapCircle(flatPoint, radius, Hits, affectedLayers);
             GameObject owner = _projectile.Owner;
 
-            for (int i = 0; i < count; i++)
+            foreach (FlatCollider hit in Hits)
             {
-                Collider hit = HitBuffer[i];
-
                 if (!affectOwner && owner != null && hit.transform.IsChildOf(owner.transform))
                 {
                     continue;
@@ -64,10 +65,8 @@ namespace _Project.Scripts.Projectiles
 
                 if (hit.TryGetComponent(out IShockwaveReceiver reactive))
                 {
-                    // Measured on the flat plane to the nearest surface, so big things like walls react fairly
-                    Vector3 closest = hit.ClosestPoint(point);
-                    closest.y = point.y;
-                    float surfaceDistance = Vector3.Distance(closest, point);
+                    // Measured to the nearest edge, so big things like walls react fairly
+                    float surfaceDistance = Vector2.Distance(hit.ClosestPoint(flatPoint), flatPoint);
                     reactive.OnShockwave(point, 1f - Mathf.Clamp01(surfaceDistance / radius));
                 }
 
